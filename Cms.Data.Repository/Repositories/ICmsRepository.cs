@@ -1,14 +1,25 @@
 ﻿using Cms.Data.Repository.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cms.Data.Repository.Repositories
 {
     public interface ICmsRepository
     {
+        //collections
         IEnumerable<Course> GetAllCourses();
+        Task<IEnumerable<Course>> GetAllCoursesAsync();
+
+        //Individual
+        Course AddCourse(Course newCourse);
+        bool IsCourseExists(int courseId);
+        Course GetCourse(int courseId);
+        Course UpdateCourse(Course updatedCourse, int courseId);
+
+        bool DeleteCourse(int courseId);
+
+        //Students
+
+        Task<IEnumerable<Student>> GetStudentsAsync(int courseId);
+
+        Student AddStudent(Student newStudent);
     }
 }
