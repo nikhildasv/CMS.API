@@ -55,8 +55,7 @@ namespace Cms.Data.Repository.Repositories
                     FirstName ="hyhf",
                     LastName = "plj",
                     PhoneNumber ="8568",
-                    Course = courses.Where(x => x.CourseId == 2).SingleOrDefault()
-                }
+                    Course = courses.SingleOrDefault(x => x.CourseId == 2) }
             };
 
         }
@@ -119,7 +118,7 @@ namespace Cms.Data.Repository.Repositories
         {
             return await Task.Run(() => {
                 return students.Where(s => s.Course.CourseId == courseId);
-                });
+            });
         }
         public Student AddStudent(Student newStudent)
         {

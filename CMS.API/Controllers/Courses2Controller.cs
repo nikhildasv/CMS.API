@@ -6,13 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CMS.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("courses")]
+    // [Route("v{version:apiVersion}/courses")]//api version in url path itself: eg: http://localhost:5147/v1/Courses
     [ApiController]
-    [ApiVersion("1.0")]
-    public class CoursesController : ControllerBase
+    [ApiVersion("2.0")]
+    [ApiVersion("3.0")]
+    public class Courses2Controller : ControllerBase
     {
         private readonly ICmsRepository _cmsRepository;
-        public CoursesController(ICmsRepository cmsRepository)
+        public Courses2Controller(ICmsRepository cmsRepository)
         {
             _cmsRepository = cmsRepository;
         }
@@ -72,7 +74,34 @@ namespace CMS.API.Controllers
             try
             {
                 var courses = await _cmsRepository.GetAllCoursesAsync();
+                foreach (var course in courses)
+                {
+                    course.CourseName += " v 2.0";
+                }
                 var result = courses.AsQueryable().ProjectToType<CourseDTO>();
+
+                return result.ToList();// convert  interface to its type and  return
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpGet]
+        [MapToApiVersion("3.0")]
+        public async Task<ActionResult<IEnumerable<CourseDTO>>> GetCourses_v3()
+        {
+            try
+            {
+                var courses = await _cmsRepository.GetAllCoursesAsync();
+                foreach (var course in courses)
+                {
+                    course.CourseName += " v 3.0";
+                }
+                var result = courses.AsQueryable().ProjectToType<CourseDTO>();
+
                 return result.ToList();// convert  interface to its type and  return
             }
             catch (Exception ex)
