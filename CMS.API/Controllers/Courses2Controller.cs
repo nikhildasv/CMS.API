@@ -89,7 +89,7 @@ namespace CMS.API.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("courses2")]
         [MapToApiVersion("3.0")]
         public async Task<ActionResult<IEnumerable<CourseDTO>>> GetCourses_v3()
         {
